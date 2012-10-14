@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>LAN Party Registration</title>
+    
+    <style type="text/css">
+      body { font-family: sans-serif; }
+      
+      #events {
+        background-color: #eee;
+        border-collapse: collapse;
+        border: 1px solid #bbb;
+        margin: auto;
+      }
+      #events th {
+        padding: 4px 16px;
+        text-align: left;
+        border-right: 1px solid #bbb;
+        border-bottom: 1px solid #bbb;
+      }
+      #events td {
+        padding: 4px 16px;
+        border-right: 1px solid #bbb;
+      }
+      
+      #not-me {
+        font-size: 75%;
+      }
+      
+      #details {
+        float: right;
+        width: 45%;
+        padding: 8px;
+      }
+      
+      #register {
+        float: left;
+        width: 45%;
+        padding: 8px;
+      }
+      
+      textarea {
+        width: 100%;
+        height: 200px;
+        font-family: sans-serif;
+      }
+      
+      #approval-warning {
+        font-style: italic;
+        color: #a00;
+        padding: 16px;
+        background-color: #eee;
+        border: 1px solid #bbb;
+      }
+      
+      #email {
+        font-family: monospace;
+      }
+      
+      input.text {
+        border: 1px solid #bbb;
+      }
+      
+      span.roster-qualifiers {
+        font-style: italic;
+        font-size: 75%;
+      }
+      
+      span.roster-me {
+        font-weight: bold;
+      }
+      
+      p.attendee-notes {
+        font-size: 75%;
+        font-style: italic;
+        margin: 0;
+      }
+      
+      #footer {
+        font-size: 75%;
+        font-style: italic;
+        clear: both;
+        text-align: center;
+      }
+      
+      #invite-note {
+        font-size: 75%;
+        font-style: italic;
+      }
+      
+      h2, h3 {
+        border-bottom: 1px solid #bbb;
+      }
+      h3 {
+        display: table;
+        padding-right: 8px;
+      }
+    </style>
+    
+    <script type="text/javascript" src="../script.js"></script>
+  </head>
+
+  <body onload="startupRegistrationPage()">
+    <div id="loading">
+      <p>Loading...
+    </div>
+    
+    <div id="done-loading" style="display: none;">
+      <div id="content" style="display: none;">
+        <h1 style="text-align: center;">Upcoming LAN Parties</h1>
+        <table id="events">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Date</th>
+              <th>Theme</th>
+              <th>Attendees</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        
+        <div id="details">
+          <h2>Event details</h2>
+          
+          <p>Date: <span id="event-date"></span><br>
+             Time: <span id="event-time"></span><br>
+             Theme: <span id="event-theme"></span>
+  
+          <p id="event-description">
+          
+          <h3>Roster</h3>
+          <ul id="event-attendees"></ul>
+        </div>
+        
+        <div id="register">
+          <h2>Registration</h2>
+          
+          <p>I am
+            <select id="probability">
+              <option value="definitely" selected>definitely</option>
+              <option value="probably">probably</option>
+              <option value="maybe">maybe</option>
+            </select>
+            <select id="duration">
+              <option value="attending" selected>attending
+              <option value="droppingBy">dropping by
+            </select> to
+            <select id="activity">
+              <option value="playing" selected>play games
+              <option value="watching">hang out / watch
+            </select>.
+
+          <table>
+            <tr><td>Name:</td><td><input class="text" type="text" id="name"></td></tr>
+            <tr><td>Show me on the roster?</td><td>
+             <select id="name-privacy">
+               <option value="everyone">Yes, to everyone</option>
+               <option value="approved" selected>Only to approved guests</option>
+               <option value="adminOnly">Only to Kenton</option>
+             </select></td></tr>
+            <tr><td>E-mail:</td><td><span id="email"></span> <a id="not-me">[logout]</a></td></tr>
+            <tr><td colspan="2"><i style="font-size: 75%">Your e-mail address will only be visible
+                to Kenton.</i></td></tr>
+          </table>
+          <p id="approval-warning">It looks like you're new!  Kenton will need to approve your
+            registration before other people can see you on the roster.  After you register, feel
+            free to send him a reminder that you need to be approved.
+          
+          <h3>Optional</h3>
+          
+          <p>I will contribute:
+            <input type="checkbox" id="bring-snacks"> snacks
+            <input type="checkbox" id="bring-beverages"> beverages
+            <input type="checkbox" id="bring-alcohol"> alcohol
+            <input type="checkbox" id="bring-cash"> $10
+          
+          <p><input type="checkbox" id="have-laptop"> I will bring a laptop in case of overflow.
+          
+          <p>Comments (e.g. game requests):<br>
+          <i style="font-size: 75%">Comments will appear under your name on the roster.</i><br>
+          <textarea id="notes"></textarea>
+          
+          <div id="invite-note">
+            <p><b>Note:</b>  <b style="color: red;">These parties are NOT open to the general public.</b>
+              You must have been invited by Kenton.  All of Kenton's friends, and anyone who has
+              been invited to a party in the past, are automatically invited.
+          </div>
+          
+          <p style="text-align: right">
+            <button id="submit" onclick="submitRegistration()">Register</button>
+            <button id="cancel" onclick="cancelRegistration()" display="none">Cancel Registration</button>
+        </div>
+      </div>
+      
+      <div id="no-events" style="display: none">
+        <p>There are no future parties scheduled!  :(
+      </div>
+      
+      <div id="footer">
+        <p><a href="http://kentonsprojects.blogspot.com/2011/12/lan-party-optimized-house.html">
+          Original blog post about the house</a>
+      </div>
+    </div>
+  </body>
+</html>

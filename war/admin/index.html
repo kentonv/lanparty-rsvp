@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>LAN party admin interface</title>
+    
+    <style type="text/css">
+      body { font-family: sans-serif; }
+    </style>
+    
+    <script type="text/javascript" src="../script.js"></script>
+  </head>
+
+  <body onload="startupNewEventPage()">
+    <h1>Admin interface</h1>
+    
+    <table>
+      <tr>
+        <td>Date:</td>
+        <td><input type="button" value="<<" onclick="prevDate()"></td>
+        <td style="width: 150px;">Saturday <span id="date"></span></td>
+        <td><input type="button" value=">>" onclick="nextDate()"></td>
+      </tr>
+      <tr>
+        <td>Start at:</td>
+        <td><input type="button" value="<<" onclick="prevStart()"></td>
+        <td><span id="start"></span></td>
+        <td><input type="button" value=">>" onclick="nextStart()"></td>
+      </tr>
+      <tr>
+        <td>End at:</td>
+        <td><input type="button" value="<<" onclick="prevEnd()"></td>
+        <td><span id="end"></span></td>
+        <td><input type="button" value=">>" onclick="nextEnd()"></td>
+      </tr>
+    </table>
+       
+    <p>Theme: <input type="text" id="theme" style="width: 200px;"><br>
+    <textarea id="themeDescription" style="width: 400px; height: 200px;"></textarea>
+    
+    <p><input type="button" value="Create" onclick="newEvent()">
+       
+  </body>
+</html>

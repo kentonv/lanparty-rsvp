@@ -1,0 +1,9 @@
+The following files need to be placed in this directory:
+
+appengine-api-1.0-sdk-1.7.2.jar
+appengine-api-labs.jar
+appengine-endpoints.jar
+appengine-jsr107cache-1.7.2.jar
+gson-2.2.2.jar
+gson-2.2.2-sources.jar
+jsr107cache-1.1.jar
