@@ -36,6 +36,10 @@ public class RegisterServlet extends HttpServlet {
       
       approved = entity != null && ((Boolean) entity.getProperty("approved"));
       name = entity == null ? null : (String) entity.getProperty("name");
+      
+      if (approved) {
+        eventLocation = Singletons.getEventLocation();
+      }
     }
     
     private static Entity getUserEntity(User user) {
@@ -49,6 +53,7 @@ public class RegisterServlet extends HttpServlet {
     String email;
     String logoutUrl;
     boolean approved = false;
+    Singletons.EventLocation eventLocation;
   }
   
   static class Request {
@@ -62,8 +67,9 @@ public class RegisterServlet extends HttpServlet {
   }
   
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    UserInfo userInfo = new UserInfo(Singletons.USER_SERVICE.getCurrentUser(), 
-        req.getRequestURL().toString());
+    StringBuffer url = req.getRequestURL();
+    url.replace(url.lastIndexOf("/api/"), url.length(), "/");
+    UserInfo userInfo = new UserInfo(Singletons.USER_SERVICE.getCurrentUser(), url.toString());
     
     EventInfo.Context context = getCentxt(userInfo);
     

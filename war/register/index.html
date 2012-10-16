@@ -55,6 +55,10 @@
         border: 1px solid #bbb;
       }
       
+      #location {
+        display: none;
+      }
+      
       #email {
         font-family: monospace;
       }
@@ -132,6 +136,14 @@
   
           <p id="event-description">
           
+          <h3>Location</h3>
+          
+          <p id="approval-warning">It looks like you're new!  Just this once, Kenton will need to
+             approve before you can see the location details or appear on the roster.  Once you've
+             registered, ping Kenton to let him know you need to be approved.
+          
+          <p id="location">
+          
           <h3>Roster</h3>
           <ul id="event-attendees"></ul>
         </div>
@@ -166,9 +178,6 @@
             <tr><td colspan="2"><i style="font-size: 75%">Your e-mail address will only be visible
                 to Kenton.</i></td></tr>
           </table>
-          <p id="approval-warning">It looks like you're new!  Kenton will need to approve your
-            registration before other people can see you on the roster.  After you register, feel
-            free to send him a reminder that you need to be approved.
           
           <h3>Optional</h3>
           
@@ -183,12 +192,6 @@
           <p>Comments (e.g. game requests):<br>
           <i style="font-size: 75%">Comments will appear under your name on the roster.</i><br>
           <textarea id="notes"></textarea>
-          
-          <div id="invite-note">
-            <p><b>Note:</b>  <b style="color: red;">These parties are NOT open to the general public.</b>
-              You must have been invited by Kenton.  All of Kenton's friends, and anyone who has
-              been invited to a party in the past, are automatically invited.
-          </div>
           
           <p style="text-align: right">
             <button id="submit" onclick="submitRegistration()">Register</button>

@@ -28,4 +28,10 @@
     http://code.google.com/appengine/docs/java/config/appconfig.html#Enabling_Sessions
   -->
 
+  <static-files>
+    <include path="/register/**">
+      <http-header name="Vary" value="Cookie" />
+    </include>
+    <include path="**"/>
+  </static-files>
 </appengine-web-app>

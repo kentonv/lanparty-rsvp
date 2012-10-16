@@ -16,6 +16,14 @@
     <url-pattern>/admin/api/new-event</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>SetEventLocation</servlet-name>
+    <servlet-class>com.google.kentonshouse.cloud.SetEventLocationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SetEventLocation</servlet-name>
+    <url-pattern>/admin/api/set-event-location</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Approve</servlet-name>
     <servlet-class>com.google.kentonshouse.cloud.ApproveServlet</servlet-class>
   </servlet>

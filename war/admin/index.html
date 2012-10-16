@@ -40,6 +40,28 @@
     <textarea id="themeDescription" style="width: 400px; height: 200px;"></textarea>
     
     <p><input type="button" value="Create" onclick="newEvent()">
+    
+    <h2>Set event location</h2>
+    
+    <p>Warning:  Servers may have to be restarted to take effect.
        
+    <table>
+      <tr>
+        <td>Address:</td>
+        <td><textarea id="address"></textarea></td>
+      </tr>
+      <tr>
+        <td>Maps Link:</td>
+        <td><input type="text" id="maps-link"></td>
+      </tr>
+      <tr>
+        <td>Phone:</td>
+        <td><input type="text" id="phone"></td>
+      </tr>
+    </table>
+    <p>
+    
+    <p><input type="button" value="Submit" onclick="setEventLocation()">
+    
   </body>
 </html>

@@ -167,6 +167,16 @@ function newEvent() {
   post("/admin/api/new-event", eventInfo, function(response) {});
 }
 
+function setEventLocation() {
+  request = {
+    address: document.getElementById("address").value,
+    mapsLink: document.getElementById("maps-link").value,
+    phone: document.getElementById("phone").value
+  };
+  
+  post("/admin/api/set-event-location", request, function(response) {});
+}
+
 function startupNewEventPage() {
   updateDate();
   updateStart();
@@ -332,6 +342,18 @@ function initializeRegistrationPage(response, key) {
   
   if (userInfo.approved) {
     document.getElementById("approval-warning").style.display = "none";
+    if (userInfo.eventLocation) {
+      var location = document.getElementById("location");
+      removeChildren(location);
+      var link = document.createElement("a");
+      link.href = userInfo.eventLocation.mapsLink;
+      setTextWithLineBreaks(link, userInfo.eventLocation.address);
+      location.appendChild(link);
+      location.appendChild(document.createElement("br"));
+      location.appendChild(document.createElement("br"));
+      location.appendChild(document.createTextNode(userInfo.eventLocation.phone));
+      location.style.display = "block";
+    }
   }
   
   if (!key) {
