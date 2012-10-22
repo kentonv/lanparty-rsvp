@@ -3,10 +3,15 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=400;">
     <title>LAN Party Registration</title>
     
     <style type="text/css">
       body { font-family: sans-serif; }
+      
+      .mobile table, .mobile tr, .mobile td {
+        font-size: 100%;
+      }
       
       #events {
         background-color: #eee;
@@ -29,13 +34,13 @@
         font-size: 75%;
       }
       
-      #details {
+      .desktop #details {
         float: right;
         width: 45%;
         padding: 8px;
       }
       
-      #register {
+      .desktop #register {
         float: left;
         width: 45%;
         padding: 8px;
@@ -94,12 +99,13 @@
         font-style: italic;
       }
       
-      h2, h3 {
+      h2 {
         border-bottom: 1px solid #bbb;
       }
-      h3 {
+      .desktop h3 {
         display: table;
         padding-right: 8px;
+        border-bottom: 1px solid #bbb;
       }
     </style>
     

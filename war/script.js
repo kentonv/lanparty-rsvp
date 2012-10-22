@@ -1,5 +1,11 @@
 // This code totally sucks but I don't give a shit.
 
+var isMobile = navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/BlackBerry/i) ||
+    navigator.userAgent.match(/iPhone|iPad|iPod/i) ||
+    navigator.userAgent.match(/Opera Mini/i) ||
+    navigator.userAgent.match(/IEMobile/i);
+
 function get(url, callback) {
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
@@ -86,6 +92,8 @@ function setFrontPageInfo(yesno, info) {
 }
 
 function startupFrontPage() {
+  document.body.className = isMobile ? "mobile" : "desktop";
+  
   get("/api/next-event", function(events) {
     if (events.length > 0) {
       var date = new Date(events[0].startTime);
@@ -408,6 +416,8 @@ function initializeRegistrationPage(response, key) {
 }
 
 function startupRegistrationPage() {
+  document.body.className = isMobile ? "mobile" : "desktop";
+  
   get("/register/api/register", function(response) {
     initializeRegistrationPage(response, null);
     document.getElementById("loading").style.display = "none";
