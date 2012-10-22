@@ -209,6 +209,7 @@ function startupNewEventPage() {
 //=======================================================================================
 
 var chosenEvent = null;
+var eventLocation = null;
 
 function initializeRegistration(attendee) {
   document.getElementById("probability").value = attendee.probability;
@@ -256,6 +257,25 @@ function makeApproveCallback(userId) {
   }
 }
 
+function padWithZeros(i, amount) {
+  var result = i + "";
+  while (result.length < amount) {
+    result = "0" + result;
+  }
+  return result;
+}
+
+function formatDateForGcal(date) {
+  return padWithZeros(date.getUTCFullYear(), 4) +
+         padWithZeros(date.getUTCMonth() + 1, 2) +
+         padWithZeros(date.getUTCDate(), 2) +
+         "T" +
+         padWithZeros(date.getUTCHours(), 2) +
+         padWithZeros(date.getUTCMinutes(), 2) +
+         padWithZeros(date.getUTCSeconds(), 2) +
+         "Z";
+}
+
 function chooseEvent(event) {
   chosenEvent = event;
   
@@ -264,10 +284,19 @@ function chooseEvent(event) {
   // window.location.hash = event.key;
   
   var date = new Date(event.startTime);
+  var endDate = new Date(event.endTime);
   var endHour = (event.endTime - event.startTime) / 3600000 + date.getHours();
   setText(document.getElementById("event-date"), MONTHS[date.getMonth()] + " " + date.getDate());
   setText(document.getElementById("event-time"),
     hourToString(date.getHours()) + " to " + hourToString(endHour));
+  
+  document.getElementById("gcal-link").href =
+      "http://www.google.com/calendar/event?action=TEMPLATE" +
+      "&text=LAN Party at Kenton's House" +
+      "&dates=" + formatDateForGcal(date) + "/" + formatDateForGcal(endDate) +
+      "&sprop=website:iskentonhavingalanparty.com" +
+      (eventLocation ? "&location=" + eventLocation.address.split("\n").join(", ") : "") +
+      "&details=See http://iskentonhavingalanparty.com";
   
   setText(document.getElementById("event-theme"), event.theme ? event.theme : "(no theme)");
   setTextWithLineBreaks(document.getElementById("event-description"), 
@@ -366,15 +395,16 @@ function initializeRegistrationPage(response, key) {
   if (userInfo.approved) {
     document.getElementById("approval-warning").style.display = "none";
     if (userInfo.eventLocation) {
+      eventLocation = userInfo.eventLocation;
       var location = document.getElementById("location");
       removeChildren(location);
       var link = document.createElement("a");
-      link.href = userInfo.eventLocation.mapsLink;
-      setTextWithLineBreaks(link, userInfo.eventLocation.address);
+      link.href = eventLocation.mapsLink;
+      setTextWithLineBreaks(link, eventLocation.address);
       location.appendChild(link);
       location.appendChild(document.createElement("br"));
       location.appendChild(document.createElement("br"));
-      location.appendChild(document.createTextNode(userInfo.eventLocation.phone));
+      location.appendChild(document.createTextNode(eventLocation.phone));
       location.style.display = "block";
     }
   }
