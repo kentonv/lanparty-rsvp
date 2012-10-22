@@ -13,6 +13,10 @@
       .mobile #yesno { margin-top: 100px; }
       #next-info { text-align: center; }
       #register { text-align: center; display: none; }
+      #login-warning { display: none; text-align: center; width: 350px;
+                       margin-left: auto; margin-right: auto; font-style: italic; }
+      .desktop #login-warning { margin-top: 260px; }
+      .mobile #login-warning { margin-top: 160px; }
     </style>
     
     <script type="text/javascript" src="script.js"></script>
@@ -21,6 +25,10 @@
   <body onload="startupFrontPage()">
     <div id="yesno"></div>
     <div id="next-info"></div>
-    <div id="register"><a href="/register/">[See events and register]</a></div>
+    <div id="login-warning">The next page asks for access to your Google account.  This is only
+      asking what your e-mail address is -- I don't get any other information or access.  This way,
+      I don't have to write my own login system and you don't have to come up with another
+      password; I just ask Google who you are instead.</div>
+    <div id="register"><button id="register-button" onclick="showLoginWarning()">See events and register >></button></div>
   </body>
 </html>

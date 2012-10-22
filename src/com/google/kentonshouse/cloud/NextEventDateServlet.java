@@ -18,6 +18,11 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 @SuppressWarnings("serial")
 public class NextEventDateServlet extends HttpServlet {
+  static class Response {
+    List<EventInfo> events;
+    boolean loggedIn;
+  }
+  
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     PreparedQuery pq = Singletons.DATASTORE.prepare(new Query("event")
         .setFilter(new Query.FilterPredicate("end", FilterOperator.GREATER_THAN, new Date()))
@@ -31,7 +36,11 @@ public class NextEventDateServlet extends HttpServlet {
       events.add(new EventInfo(result, EventInfo.Context.FRONT_PAGE));
     }
     
+    Response response = new Response();
+    response.events = events;
+    response.loggedIn = Singletons.USER_SERVICE.isUserLoggedIn();
+    
     resp.setContentType("application/json");
-    Singletons.GSON.toJson(events, resp.getWriter());
+    Singletons.GSON.toJson(response, resp.getWriter());
   }
 }

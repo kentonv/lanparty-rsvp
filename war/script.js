@@ -94,7 +94,12 @@ function setFrontPageInfo(yesno, info) {
 function startupFrontPage() {
   document.body.className = isMobile ? "mobile" : "desktop";
   
-  get("/api/next-event", function(events) {
+  get("/api/next-event", function(response) {
+    if (response.loggedIn) {
+      document.getElementById("register-button").onclick = register;
+    }
+    
+    var events = response.events;
     if (events.length > 0) {
       var date = new Date(events[0].startTime);
       var endHour = (events[0].endTime - events[0].startTime) / 3600000 + date.getHours();
@@ -109,6 +114,16 @@ function startupFrontPage() {
       setFrontPageInfo("UNKNOWN", "No future LAN party has been scheduled!");
     }
   });
+}
+
+function showLoginWarning() {
+  document.getElementById("yesno").style.display = "none";
+  document.getElementById("next-info").style.display = "none";
+  document.getElementById("login-warning").style.display = "block";
+  
+  var button = document.getElementById("register-button");
+  setText(button, "OK, got it >>");
+  button.onclick = register;
 }
 
 function register() {
