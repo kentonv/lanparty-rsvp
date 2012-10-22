@@ -266,8 +266,8 @@ function chooseEvent(event) {
   var date = new Date(event.startTime);
   var endHour = (event.endTime - event.startTime) / 3600000 + date.getHours();
   setText(document.getElementById("event-date"), MONTHS[date.getMonth()] + " " + date.getDate());
-  document.getElementById("event-time").innerText =
-    hourToString(date.getHours()) + " to " + hourToString(endHour);
+  setText(document.getElementById("event-time"),
+    hourToString(date.getHours()) + " to " + hourToString(endHour));
   
   setText(document.getElementById("event-theme"), event.theme ? event.theme : "(no theme)");
   setTextWithLineBreaks(document.getElementById("event-description"), 
