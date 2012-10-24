@@ -36,12 +36,15 @@ function post(url, data, callback) {
   request.send(JSON.stringify(data));
 }
 
-function nextSaturday() {
-  var now = new Date();
+function saturdayAfter(now) {
   var day = now.getDay();
   var saturday = new Date(now.getTime() + (6 - day) * 86400000);
   saturday.setHours(0, 0, 0, 0);
   return saturday;
+}
+
+function nextSaturday() {
+  return saturdayAfter(new Date());
 }
 
 function hourToString(hour) {
@@ -86,9 +89,10 @@ var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc
 
 //=======================================================================================
 
-function setFrontPageInfo(yesno, info) {
-  setText(document.getElementById("yesno"), yesno);
-  setText(document.getElementById("next-info"), info);
+function setFrontPageInfo(isThisWeek, info) {
+  setText(document.getElementById("yesno"), isThisWeek ? "YES" : "NO");
+  setTextWithLineBreaks(document.getElementById("next-info"),
+      (isThisWeek ? "" : "There is no LAN party this weekend.\n") + info);
 }
 
 function startupFrontPage() {
@@ -106,7 +110,7 @@ function startupFrontPage() {
       
       var endOfNextSaturday = nextSaturday().getTime() + 86400000;
       
-      setFrontPageInfo(events[0].startTime < endOfNextSaturday ? "YES" : "NO",
+      setFrontPageInfo(events[0].startTime < endOfNextSaturday,
           "The next LAN party is: " + MONTHS[date.getMonth()] + " " + date.getDate() +
           " " + hourToString(date.getHours()) + " to " + hourToString(endHour));
       document.getElementById("register").style.display = "block";
@@ -135,6 +139,8 @@ function register() {
 var selectedDate = nextSaturday();
 var selectedStartHour = 12;
 var selectedEndHour = 24;
+var selectedEventKey = null;
+var upcomingEvents = {};
 
 function updateDate() {
   var dateString = MONTHS[selectedDate.getMonth()] + " " + selectedDate.getDate();
@@ -149,14 +155,39 @@ function updateEnd() {
   setText(document.getElementById("end"), hourToString(selectedEndHour));
 }
 
+function checkForEventOnSelectedDate() {
+  var time = selectedDate.getTime();
+  if (time in upcomingEvents) {
+    var event = upcomingEvents[time];
+    document.getElementById("theme").value = event.theme ? event.theme : "";
+    document.getElementById("themeDescription").value = 
+      event.themeDescription ? event.themeDescription : "";
+    selectedStartHour = (event.startTime - time) / 3600000;
+    selectedEndHour = (event.endTime - time) / 3600000;
+    selectedEventKey = event.key;
+    document.getElementById("create-button").value = "Update";
+  } else {
+    document.getElementById("theme").value = "";
+    document.getElementById("themeDescription").value = "";
+    selectedStartHour = 12;
+    selectedEndHour = 24;
+    selectedEventKey = null;
+    document.getElementById("create-button").value = "Create";
+  }
+  updateStart();
+  updateEnd();
+}
+
 function nextDate() {
-  selectedDate = new Date(selectedDate.getTime() + 7 * 86400000);
+  selectedDate = saturdayAfter(new Date(selectedDate.getTime() + 2 * 86400000));
   updateDate();
+  checkForEventOnSelectedDate();
 }
 
 function prevDate() {
-  selectedDate = new Date(selectedDate.getTime() - 7 * 86400000);
+  selectedDate = saturdayAfter(new Date(selectedDate.getTime() - 9 * 86400000));
   updateDate();
+  checkForEventOnSelectedDate();
 }
 
 function nextStart() {
@@ -187,7 +218,19 @@ function newEvent() {
     themeDescription: document.getElementById("themeDescription").value
   };
   
-  post("/admin/api/new-event", eventInfo, function(response) {});
+  if (selectedEventKey) {
+    eventInfo.key = selectedEventKey;
+  }
+  
+  var createButton = document.getElementById("create-button");
+  createButton.disabled = true;
+  
+  post("/admin/api/new-event", eventInfo, function(response) {
+    createButton.disabled = false;
+    createButton.value = "Update";
+    eventInfo.key = response.key;
+    upcomingEvents[selectedDate.getTime()] = eventInfo;
+  });
 }
 
 function setEventLocation() {
@@ -204,6 +247,17 @@ function startupNewEventPage() {
   updateDate();
   updateStart();
   updateEnd();
+  
+  get("/register/api/register", function(response) {
+    for (var i in response.events) {
+      var event = response.events[i];
+      var start = new Date(event.startTime);
+      start.setHours(0, 0, 0, 0);
+      upcomingEvents[start.getTime()] = event;
+    }
+    
+    checkForEventOnSelectedDate();
+  });
 }
 
 //=======================================================================================

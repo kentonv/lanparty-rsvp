@@ -80,7 +80,8 @@ class EventInfo {
     startTime = ((Date) entity.getProperty("start")).getTime();
     endTime = ((Date) entity.getProperty("end")).getTime();
     theme = (String) entity.getProperty("theme");
-    themeDescription = (String) entity.getProperty("themeDescription");
+    Object tdProp = entity.getProperty("themeDescription");
+    themeDescription = (tdProp instanceof Text) ? ((Text) tdProp).getValue() : ((String) tdProp);
     
     Text attendeeText = (Text) entity.getProperty("attendees");
     if (attendeeText != null) {
@@ -104,20 +105,27 @@ class EventInfo {
   
   Entity toEntity() {
     Entity entity = new Entity("event");
-    entity.setProperty("start", new Date(startTime));
-    entity.setProperty("end", new Date(endTime));
-    if (theme != null && !theme.isEmpty()) {
-      entity.setProperty("theme", theme);
-    }
-    if (themeDescription != null && !themeDescription.isEmpty()) {
-      entity.setProperty("themeDescription", themeDescription);
-    }
+    updateEntityMetadata(entity);
     
     if (attendees != null) {
       entity.setProperty("attendees", new Text(Singletons.GSON.toJson(attendees)));
     }
-    
     return entity;
+  }
+  
+  void updateEntityMetadata(Entity entity) {
+    entity.setProperty("start", new Date(startTime));
+    entity.setProperty("end", new Date(endTime));
+    if (theme != null && !theme.isEmpty()) {
+      entity.setProperty("theme", theme);
+    } else {
+      entity.removeProperty("theme");
+    }
+    if (themeDescription != null && !themeDescription.isEmpty()) {
+      entity.setProperty("themeDescription", new Text(themeDescription));
+    } else {
+      entity.removeProperty("themeDescription");
+    }
   }
   
   enum Context {
