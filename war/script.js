@@ -120,16 +120,6 @@ function startupFrontPage() {
   });
 }
 
-function showLoginWarning() {
-  document.getElementById("yesno").style.display = "none";
-  document.getElementById("next-info").style.display = "none";
-  document.getElementById("login-warning").style.display = "block";
-  
-  var button = document.getElementById("register-button");
-  setText(button, "OK, got it >>");
-  button.onclick = register;
-}
-
 function register() {
   window.location.pathname = "/register/";
 }
