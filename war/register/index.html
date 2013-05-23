@@ -5,14 +5,14 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=400">
     <title>LAN Party Registration</title>
-    
+
     <style type="text/css">
       body { font-family: sans-serif; }
-      
+
       .mobile table, .mobile tr, .mobile td {
         font-size: 100%;
       }
-      
+
       #events {
         background-color: #eee;
         border-collapse: collapse;
@@ -29,29 +29,29 @@
         padding: 4px 16px;
         border-right: 1px solid #bbb;
       }
-      
+
       #not-me {
         font-size: 75%;
       }
-      
+
       .desktop #details {
         float: right;
         width: 45%;
         padding: 8px;
       }
-      
+
       .desktop #register {
         float: left;
         width: 45%;
         padding: 8px;
       }
-      
+
       textarea {
         width: 100%;
         height: 200px;
         font-family: sans-serif;
       }
-      
+
       #approval-warning {
         font-style: italic;
         color: #a00;
@@ -59,29 +59,29 @@
         background-color: #eee;
         border: 1px solid #bbb;
       }
-      
+
       #location {
         display: none;
       }
-      
+
       #email {
         font-family: monospace;
       }
-      
+
       input.text {
         border: 1px solid #bbb;
       }
-      
+
       span.roster-qualifiers {
         font-style: italic;
         font-size: 75%;
         color: #666;
       }
-      
+
       span.roster-me {
         font-weight: bold;
       }
-      
+
       p.attendee-notes {
         font-size: 75%;
         font-style: italic;
@@ -89,23 +89,23 @@
         padding-left: 16px;
         color: #666;
       }
-      
+
       #footer {
         font-size: 75%;
         font-style: italic;
         clear: both;
         text-align: center;
       }
-      
+
       #toplinks {
         text-align: center;
       }
-      
+
       #invite-note {
         font-size: 75%;
         font-style: italic;
       }
-      
+
       h2 {
         border-bottom: 1px solid #bbb;
       }
@@ -115,7 +115,7 @@
         border-bottom: 1px solid #bbb;
       }
     </style>
-    
+
     <script type="text/javascript" src="../script.js"></script>
   </head>
 
@@ -123,7 +123,7 @@
     <div id="loading">
       <p>Loading...
     </div>
-    
+
     <div id="done-loading" style="display: none;">
       <div id="content" style="display: none;">
         <h1 style="text-align: center;">Upcoming LAN Parties</h1>
@@ -139,41 +139,38 @@
           <tbody>
           </tbody>
         </table>
-        
+
         <div id="toplinks">
           <p><a href="http://kentonsprojects.blogspot.com/2011/12/lan-party-optimized-house.html">
-            About Kenton's house</a> - 
+            About Kenton's house</a> -
             <a href="http://www.kentonshouse.com/lan-party-faq">LAN Party FAQ</a>
         </div>
-        
+
         <div id="details">
           <h2>Event details</h2>
-          
+
           <p>Date: <span id="event-date"></span>
                    <a target="_blank" id="gcal-link"><img src="/gcal.png" alt="Add to Google Calendar"></a><br>
              Time: <span id="event-time"></span><br>
              Theme: <span id="event-theme"></span>
-  
+
           <p id="event-description">
-          
+
           <h3>Location</h3>
-          
-          <p id="approval-warning">It looks like you're new!  Please note that Kenton's LAN parties
-             are private.  If you were invited by Kenton then feel free to register.  If you were
-             invited by a friend of Kenton's, make sure they have asked Kenton about it before you
-             register.  Just this once, Kenton will have to approve you before you can see location
-             details and before other people can see you on the roster, but in the future it will
-             be automatic.
-          
+
+          <p id="approval-warning">
+             Kenton's address will appear here once you have been approved.  Once you register, ask
+             Kenton to approve you, or just wait and he'll probably do it within a day.  You'll
+             only need approval the first time -- in the future it will be automatic.
           <p id="location">
-          
+
           <h3>Roster</h3>
           <ul id="event-attendees"></ul>
         </div>
-        
+
         <div id="register">
           <h2>Registration</h2>
-          
+
           <p>I am
             <select id="probability">
               <option value="definitely" selected>definitely</option>
@@ -201,27 +198,27 @@
             <tr><td colspan="2"><i style="font-size: 75%">Your e-mail address will only be visible
                 to Kenton.</i></td></tr>
           </table>
-          
+
           <h3>Optional</h3>
-          
+
           <p>I will contribute:
             <input type="checkbox" id="bring-snacks"> snacks
             <input type="checkbox" id="bring-beverages"> beverages
             <input type="checkbox" id="bring-alcohol"> alcohol
             <input type="checkbox" id="bring-cash"> $10
-          
+
           <p><input type="checkbox" id="have-laptop"> I will bring a laptop in case of overflow.
-          
+
           <p>Comments (e.g. game requests):<br>
           <i style="font-size: 75%">Comments will appear under your name on the roster.</i><br>
           <textarea id="notes"></textarea>
-          
+
           <p style="text-align: right">
             <button id="submit" onclick="submitRegistration()">Register</button>
             <button id="cancel" onclick="cancelRegistration()" display="none">Cancel Registration</button>
         </div>
       </div>
-      
+
       <div id="no-events" style="display: none">
         <p>There are no future parties scheduled!  :(
       </div>
