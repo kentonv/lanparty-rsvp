@@ -22,29 +22,38 @@ class EventInfo {
   String themeDescription;
   ArrayList<Attendee> attendees;
   int anonymousAttendees = 0;
-  
+
   static class Attendee {
     enum Probability { definitely, probably, maybe }
     enum Duration { attending, droppingBy }
     enum Activity { playing, watching }
     enum Privacy { everyone, approved, adminOnly }
     enum Contribution { snacks, beverages, alcohol, cash }
-    
+
     Probability probability;
     Duration duration;
     Activity activity;
-    
+
     String name;
     Privacy namePrivacy;
     HashSet<Contribution> contributions;
     boolean haveLaptop;
     String notes;
-    
+
     String userId;
     String email;
     Boolean isMe;
+    Boolean isJames;
     Boolean approved;
-    
+
+    private void checkForJames() {
+      if (email.equals("aguilar.james@gmail.com")) {
+        isJames = true;
+      } else {
+        isJames = null;
+      }
+    }
+
     private void removeAdminOnlyInfo(String callerId) {
       if (isUser(callerId)) {
         isMe = true;
@@ -67,13 +76,13 @@ class EventInfo {
           notes == null) {
         return "Missing fields.";
       }
-      if (isMe != null || approved != null || userId != null || email != null) {
+      if (isMe != null || approved != null || userId != null || email != null || isJames != null) {
         return "I don't think so.";
       }
       return null;
     }
   }
-  
+
   EventInfo() {}
   EventInfo(Entity entity, Context context) {
     key = KeyFactory.keyToString(entity.getKey());
@@ -82,17 +91,17 @@ class EventInfo {
     theme = (String) entity.getProperty("theme");
     Object tdProp = entity.getProperty("themeDescription");
     themeDescription = (tdProp instanceof Text) ? ((Text) tdProp).getValue() : ((String) tdProp);
-    
+
     Text attendeeText = (Text) entity.getProperty("attendees");
     if (attendeeText != null) {
       attendees = Singletons.GSON.fromJson(attendeeText.getValue(), ATTENDEE_LIST_TYPE);
     }
-    
+
     filterFor(context);
   }
-  
+
   static Type ATTENDEE_LIST_TYPE = new TypeToken<List<Attendee>>(){}.getType();
-  
+
   String validate() {
     if (startTime == 0) {
       return "Missing start time.";
@@ -102,17 +111,17 @@ class EventInfo {
     }
     return null;
   }
-  
+
   Entity toEntity() {
     Entity entity = new Entity("event");
     updateEntityMetadata(entity);
-    
+
     if (attendees != null) {
       entity.setProperty("attendees", new Text(Singletons.GSON.toJson(attendees)));
     }
     return entity;
   }
-  
+
   void updateEntityMetadata(Entity entity) {
     entity.setProperty("start", new Date(startTime));
     entity.setProperty("end", new Date(endTime));
@@ -127,7 +136,7 @@ class EventInfo {
       entity.removeProperty("themeDescription");
     }
   }
-  
+
   enum Context {
     FRONT_PAGE,
     UNAPPROVED,
@@ -135,12 +144,12 @@ class EventInfo {
     ADMIN,
     RAW
   }
-  
+
   private void filterFor(Context context) {
-    User caller = (context == Context.FRONT_PAGE || context == Context.RAW) ? 
+    User caller = (context == Context.FRONT_PAGE || context == Context.RAW) ?
         null : Singletons.USER_SERVICE.getCurrentUser();
     String callerId = caller != null ? caller.getUserId() : null;
-    
+
     switch (context) {
       case FRONT_PAGE:
         attendees = null;
@@ -150,8 +159,9 @@ class EventInfo {
         Set<String> approvedUsers = Singletons.getApprovedUsers();
         for (Attendee attendee: attendees) {
           if (attendee.isUser(callerId) ||
-              (attendee.namePrivacy == Privacy.everyone && 
+              (attendee.namePrivacy == Privacy.everyone &&
                approvedUsers.contains(attendee.userId))) {
+            attendee.checkForJames();
             attendee.removeAdminOnlyInfo(callerId);
             filteredList.add(attendee);
           } else if (approvedUsers.contains(attendee.userId)) {
@@ -165,9 +175,10 @@ class EventInfo {
         ArrayList<Attendee> filteredList = new ArrayList<Attendee>();
         Set<String> approvedUsers = Singletons.getApprovedUsers();
         for (Attendee attendee: attendees) {
-          if (attendee.isUser(callerId) || 
+          if (attendee.isUser(callerId) ||
               (attendee.namePrivacy != Privacy.adminOnly &&
                approvedUsers.contains(attendee.userId))) {
+            attendee.checkForJames();
             attendee.removeAdminOnlyInfo(callerId);
             filteredList.add(attendee);
           } else if (approvedUsers.contains(attendee.userId)) {
@@ -180,6 +191,7 @@ class EventInfo {
       case ADMIN: {
         Set<String> approvedUsers = Singletons.getApprovedUsers();
         for (Attendee attendee: attendees) {
+          attendee.checkForJames();
           attendee.isMe = attendee.isUser(callerId) ? true : null;
           attendee.approved = approvedUsers.contains(attendee.userId);
         }
