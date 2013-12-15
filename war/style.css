@@ -1,0 +1,215 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: Helvetica, Arial, Tahoma, sans-serif;
+}
+
+body {
+	background-color: #90C8FF;
+}
+
+#content > h1 {
+	color: white;
+	text-align: left !important;
+	padding: 10px 14px;
+} 
+
+table#events {
+	color: white;
+	border-collapse: collapse;
+	margin: 4px 40px;
+	max-width: 700px;
+	display: block;
+}
+
+
+table#events tr:nth-child(n+2) {
+	background-color: black;
+}
+
+table#events tr:nth-child(n+2):hover {
+	background-color: MintCream;
+	color: black;
+}
+
+
+table#events th {
+	text-align: left;
+	padding-left: 13px;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	opacity: 0.8;
+}
+
+table#events td {
+	position: relative;
+	padding: 5px 13px;
+	border: 0;
+	vertical-align: top;
+	border-bottom: 1px solid #90C8FF;
+}
+
+table#events td:first-child {
+	width: 0px;
+	padding: 0px;
+}
+
+
+table#events td:nth-child(2) {
+	width: 70px;
+}
+
+table#events td:nth-child(4) {
+	text-align: right;
+}
+
+table#events td input {
+	position: absolute;
+	top: 0px;
+	left: -8px;
+	width: 800px;
+	z-index: 9001;
+	height: 100%;
+}
+
+table#events tbody {
+	height: 30px;
+	display: block;
+}
+
+#register {
+  background-color: white;
+  border-top: 1px solid #48c;
+  border-bottom: 1px solid #48c;
+}
+
+#details {
+	width: 40%;
+	float: right;
+	position: relative;
+	padding: 30px 35px;
+	background-color: #EFF9FF;
+	border: 4px solid black;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-right: 0;
+	margin-bottom: 10px;
+	z-index: 5;
+
+}
+h2 {
+	margin-bottom: 20px;
+}
+
+h3 {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+#details h3 {
+	font-size: 1.1em;
+	text-transform: uppercase;
+	color: #333;
+	border-bottom: 1px solid #333;
+	letter-spacing: 3px;
+}
+
+#details p {
+	margin-bottom: 10px;
+	line-height: 1.3em;
+}
+
+#details p span {
+	padding-left: 7px;
+	font-weight: bold;
+}
+
+#details #event-attendees {
+	list-style-type: none;
+}
+
+#details #event-attendees li {
+	margin: 4px 0px;
+	padding: 4px 6px;
+	border: 1px solid #D9E9E9;
+	background-color: white;
+	border-radius: 3px;
+	position: relative;
+}
+
+#details span.roster-qualifiers {
+	font-size: 0.8em;
+	color: #B6B6B6;
+	display: block;
+	position: absolute;
+	top: 5px;
+	right: 6px;
+}
+
+#details p.attendee-notes {
+	font-size: 0.8em;
+	font-style: italic;
+	margin-bottom: 0px;
+	margin-left: 40px;
+	margin-top: 4px;
+	color: #748888;
+}
+
+#register {
+	position: relative;
+	z-index: 0;
+	top: 15px;
+	padding: 25px 30px;
+}
+
+#register td {
+	padding: 5px 0px;
+}
+
+#register tr:nth-child(4) td {
+	padding-top: 0px;
+	position: relative;
+	top: -7px;
+}
+
+#register p {
+	margin-bottom: 8px;
+	line-height: 1.3em;
+	overflow: auto;
+}
+
+#register select {
+	font-size: 1em;
+}
+
+#register p input {
+	margin-left: 14px;
+}
+
+#register i {
+	color: #B6B6B6;
+}
+
+#register button {
+	float: left;
+	margin-right: 15px;
+	padding: 4px 22px;
+	font-size: 0.7em;
+	font-weight: bold;
+}
+
+textarea {
+	width: 90%;
+	height: 200px;
+	font-family: monospace;
+	font-size: 1em;
+}
+
+#footer {
+	background-color: white;
+	position: relative;
+	z-index: 1;
+	padding: 22px 30px;
+	font-size: 0.8em;
+	font-style: italic;
+}
